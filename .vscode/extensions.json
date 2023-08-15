@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "vue.vscode-typescript-vue-plugin"
+  ],
+  "unwantedRecommendations": [
+    "vue.volar"
+  ]
+}
