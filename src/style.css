@@ -5,6 +5,10 @@
 @import "assets/main.css";
 
 @layer components {
+    #app > article > aside {
+        @apply leading-6 max-h-screen flex place-items-center md:pr-[calc(var(--section-gap)/2)]
+    }
+
     .sticky-top {
         @apply sticky top-0
     }
