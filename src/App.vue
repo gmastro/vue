@@ -1,50 +1,49 @@
-<script lang="ts">
+<script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { defineComponent } from 'vue';
+// import { defineComponent } from 'vue';
 import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/menus/Navbar.vue'
 
-export default defineComponent({
-  // setup() {
-  //   return {}
-  // },
-  components: {
-    HelloWorld,
-  },
-  props: {
-    name: String,
-    msg: {type: String, required: true}
-  },
-  data() {
-    return {
-      count: 1
-    }
-  },
-  mounted() {
-    this.name,
-    this.msg,
-    this.count
-  }
-});
+// export default defineComponent({
+//   // setup() {
+//   //   return {}
+//   // },
+//   components: {
+//     HelloWorld,
+//   },
+//   props: {
+//     name: String,
+//     msg: {type: String, required: true}
+//   },
+//   data() {
+//     return {
+//       count: 1
+//     }
+//   },
+//   mounted() {
+//     this.name,
+//     this.msg,
+//     this.count
+//   }
+// });
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <Navbar />
+  <article>
+    <aside class="leading-6 max-h-screen md:flex md:pr-[calc(var(--section-gap)/2)]">
+      <div class="md:flex md:place-items-start md:flex-wrap">
+        <img alt="Vue logo" class="block mx-auto mb-8 md:m-0 md:mr-8" src="@/assets/logo.svg" width="125" height="125" />
+        <HelloWorld msg="You did it!" />
+      </div>
+    </aside>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <RouterView />
+  </article>
 </template>
 
 <style scoped>
+/*
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -106,4 +105,5 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+*/
 </style>

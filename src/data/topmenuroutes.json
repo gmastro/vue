@@ -1,0 +1,14 @@
+[{
+    "isBrand": true,
+    "href": "/",
+    "text": "Brand",
+    "name": "logo",
+    "groups": ["*"],
+    "roles":  ["*"]
+}, {
+    "href": "/about",
+    "text": "About",
+    "name": "about",
+    "groups": ["*"],
+    "roles":  ["*"]
+}]

@@ -1,3 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "assets/base.css";
+@import "assets/main.css";
+
+@layer components {
+    .sticky-top {
+        @apply sticky top-0
+    }
+
+    .navbar {
+        @apply flex w-full flex-wrap items-center justify-between bg-neutral-700 py-2 dark:bg-neutral-600 lg:py-4
+    }
+
+    .navbar .wrap {
+        @apply flex w-full flex-wrap items-center justify-between px-3 ml-2
+    }
+
+    .navbar .hamburger {
+        @apply block border-0 bg-transparent px-2 text-neutral-300 hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none focus:outline-none focus:ring-0 dark:text-neutral-200 lg:hidden
+    }
+
+    .navbar ul.nav-left {
+        @apply list-none mr-auto flex flex-col pl-0 lg:mt-1 lg:flex-row
+    }
+
+    .navbar ul.nav-left li {
+        @apply mb-4 pl-2 lg:mb-0 lg:pl-0 lg:pr-1
+    }
+
+    .navbar ul li a {
+        @apply text-lime-500 hover:text-lime-700 focus:text-lime-700
+    }
+}
