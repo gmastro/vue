@@ -11,4 +11,25 @@
     "name": "about",
     "groups": ["*"],
     "roles":  ["*"]
+}, {
+    "href": "/moufa",
+    "text": "Moufa",
+    "name": "moufa",
+    "children": [
+        {
+            "href": "moufa/foo",
+            "text": "Foo",
+            "name": "foo",
+            "groups": ["*"],
+            "roles":  ["*"]
+        }, {
+            "href": "moufa/bar",
+            "text": "Bar",
+            "name": "bar",
+            "groups": ["*"],
+            "roles":  ["*"]
+        }
+    ],
+    "groups": ["*"],
+    "roles":  ["*"]
 }]

@@ -1,3 +1,5 @@
+import type { Component } from "vue";
+
 export interface User {
     id?: number;
     first_name?: string;
@@ -12,8 +14,9 @@ export interface User {
 
 export interface Route {
     isBrand?: boolean;
+    hasChildren?: boolean;
     href: string;
-    text: string;
+    text: string | Component;
     name: string;
     groups: string[];
     roles: string[];
@@ -103,10 +106,36 @@ export function multiHas<T>(keys: T[], a: T[], intersect: boolean = true, invert
  *
  * > **Note**: this is an hybrid for granting access or permissions and should not be used as is.
  *
- * @param route 
- * @param user 
+ * @param   route Route to examine
+ * @param   user User with certain roles and within certain groups
  */
 export function hasAccess(route: Route, user: User): boolean {
     return multiHas<string>(user.groups, route.groups, false)
         && multiHas<string>(user.roles, route.roles, false);
+}
+
+/**
+ * Recursive Access
+ *
+ * It will return all those routes which, the given user has access.
+ * Use it with computed to cache the result for a given set of user groups/roles
+ *
+ * @param   routes Routes to examine
+ * @param   user User with certain roles and within certain groups
+ * @returns Route[]
+ */
+export function recursiveHasAccess(routes: Route[] = [], user: User): Route[] {
+    let list = routes.map( (r: Route) => {
+        if (r.hasOwnProperty('isBrand') && r.isBrand === true) {
+            r.text = `<img alt="Vue logo" class="block mr-4 lg:m-0" src="logo.svg" width="24"/>`;
+        }
+
+        r.children = recursiveHasAccess(r.children, user)
+        r.isBrand = r.hasOwnProperty('isBrand') && r.isBrand === true;
+        r.hasChildren = r.children.length > 0;
+
+        return r;
+    });
+
+    return list.filter( (r: Route) => hasAccess(r, user));
 }
