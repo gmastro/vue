@@ -2,6 +2,7 @@
   "files": [],
   "compilerOptions": {
     "strict": true,
+    "strictNullChecks": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true
   },

@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { flatten, visitor, recursiveHasAccess, Route } from '@/functions/helpers';
-import * as Routes from '@/data/topmenuroutes.json';
+import { flatten, visitor, recursiveHasAccess, type Route } from '@/functions/helpers';
+// import * as Routes from '@/data/topmenuroutes.json';
+import Routes from '@/data/topmenuroutes.json';
 import Submenu from './Submenu.vue';
 
 const allDropdowns: {[key: string]: boolean} = {};
@@ -14,7 +15,7 @@ export default defineComponent({
     data() {
         return {
             user: visitor,
-            routes: Routes.default,
+            routes: Routes,
             showMenu: false,
             dropdowns: allDropdowns,
         }

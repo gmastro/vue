@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Route } from '@/functions/helpers';
+import { type Route } from '@/functions/helpers';
 
 defineProps<{
   routes: Route[] | undefined,
