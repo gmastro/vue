@@ -4,6 +4,8 @@ import { flatten, visitor, recursiveHasAccess, type Route } from '@/functions/he
 // import * as Routes from '@/data/topmenuroutes.json';
 import Routes from '@/data/topmenuroutes.json';
 import Submenu from './Submenu.vue';
+import IconHamburger from '../icons/IconHamburger.vue';
+import IconDropdownArrow from '../icons/IconDropdownArrow.vue';
 
 const allDropdowns: {[key: string]: boolean} = {};
 
@@ -11,6 +13,8 @@ export default defineComponent({
     name: 'Navbar',
     components: {
         Submenu,
+        IconHamburger,
+        IconDropdownArrow
     },
     data() {
         return {
@@ -41,22 +45,18 @@ export default defineComponent({
 
 <template>
   <nav class="navbar sticky-top">
-    <div class="wrap">
+    <div class="nav-wrap">
         <button @click="toggleNav()"
                 class="hamburger"
                 type="button"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
           <span class="[&>svg]:w-7">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-7 w-7">
-              <path fill-rule="evenodd"
-                    d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z"
-                    clip-rule="evenodd" />
-            </svg>
+            <IconHamburger />
           </span>
         </button>
 
-        <div :class="[showMenu ? 'flex-row' : '!visible hidden']" class="mt-2 flex-grow basis-[100%] items-center lg:mt-0 lg:!flex lg:basis-auto">
+        <div :class="[showMenu ? 'flex-row' : '!visible hidden']" class="nav-responsive">
           <ul class="nav-left">
               <li v-for="(route, index) in menulist" :key="route.name">
                 <template v-if="route.isBrand">
@@ -70,15 +70,8 @@ export default defineComponent({
                     </RouterLink>
                     <span v-if="route.hasChildren"
                           @click="toggleDropdown(route.name)"
-                          class="ml-1 w-2">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                class="h-5 w-5">
-                            <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                        </svg>
+                          class="dropdown">
+                        <IconDropdownArrow />
                     </span>
                     <Submenu :toShow="toggleSubmenu(route.name)" :routes="route.children" />
                 </template>
