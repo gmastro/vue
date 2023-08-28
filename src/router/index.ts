@@ -20,6 +20,18 @@ const router = createRouter({
       path: '/users',
       name: 'users',
       component: HomeView,
+    }, {
+      path: '/moufa',
+      name: 'moufa',
+      component: HomeView
+    }, {
+      path: '/moufa/foo',
+      name: 'foo',
+      component: HomeView
+    }, {
+      path: '/moufa/bar',
+      name: 'bar',
+      component: HomeView
     }
   ]
 })

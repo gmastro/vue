@@ -1,6 +1,11 @@
 {
   "files": [],
-  "compilerOptions": {"strict": true},
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"
@@ -15,6 +20,7 @@
   "include": [
     "./src/*.ts",
     "./src/*.vue",
-    "./src/*.ext"
+    "./src/*.ext",
+    "./src/**/*.json"
   ]
 }

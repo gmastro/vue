@@ -1,0 +1,35 @@
+[{
+    "isBrand": true,
+    "href": "/",
+    "text": "Brand",
+    "name": "logo",
+    "groups": ["*"],
+    "roles":  ["*"]
+}, {
+    "href": "/about",
+    "text": "About",
+    "name": "about",
+    "groups": ["*"],
+    "roles":  ["*"]
+}, {
+    "href": "/moufa",
+    "text": "Moufa",
+    "name": "moufa",
+    "children": [
+        {
+            "href": "moufa/foo",
+            "text": "Foo",
+            "name": "foo",
+            "groups": ["*"],
+            "roles":  ["*"]
+        }, {
+            "href": "moufa/bar",
+            "text": "Bar",
+            "name": "bar",
+            "groups": ["*"],
+            "roles":  ["*"]
+        }
+    ],
+    "groups": ["*"],
+    "roles":  ["*"]
+}]

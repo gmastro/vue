@@ -1,3 +1,108 @@
+@import "assets/base.css";
+@import "assets/main.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    #app > article > aside {
+        @apply  leading-6 max-h-screen flex place-items-center
+                /** lg **/
+                lg:pr-divider-2;
+    }
+
+    /* navbar customization */
+    .sticky-top {
+        @apply  sticky top-0 z-10;
+    }
+
+    .navbar {
+        @apply  flex w-full flex-wrap items-center justify-between bg-neutral-700 py-2
+                /** dark **/
+                dark:bg-neutral-600
+                /** lg **/
+                lg:py-4;
+    }
+
+    .navbar .nav-wrap {
+        @apply  flex w-full flex-wrap items-center justify-between px-3 ml-2;
+    }
+
+    .navbar .nav-wrap .nav-responsive {
+        @apply  mt-2 flex-grow basis-[100%] items-center
+                /** lg **/
+                lg:mt-0 lg:!flex lg:basis-auto;
+    }
+
+    .navbar .hamburger {
+        @apply  block border-0 bg-transparent px-2 text-neutral-300
+                /** hover **/
+                hover:no-underline hover:shadow-none focus:no-underline focus:shadow-none
+                /** focus **/
+                focus:outline-none focus:ring-0
+                /** dark **/
+                dark:text-neutral-200
+                /** lg **/
+                lg:hidden;
+    }
+
+    .navbar ul.nav-left {
+        @apply  list-none mr-auto flex flex-col pl-0
+                /** lg **/
+                lg:mt-1 lg:flex-row;
+    }
+
+    .navbar ul.nav-left li {
+        place-content: flex-start;
+        @apply  mb-4 px-4 flex place-items-center relative
+                /** lg **/
+                lg:mb-0 lg:pl-0 lg:pr-1 lg:place-content-center;
+    }
+
+    .navbar ul li a {
+        @apply  text-lime-500
+                /** hover **/
+                hover:text-lime-700
+                /** focus **/
+                focus:text-lime-700;
+    }
+
+    .navbar ul li span.dropdown {
+        @apply  ml-2 w-2;
+    }
+
+    /* welcome item */
+    .welcome.item {
+        @apply  mt-8 flex relative
+                /** lg **/
+                lg:mt-0 lg:p-0 lg:pt-[0.4rem] lg:pb-4 lg:pl-divider-2
+                /** before **/
+                lg:before:bottom-shift-25 lg:before:h-unshift-25
+                /** after **/
+                lg:after:top-shift-25 lg:after:h-unshift-25;
+    }
+
+    .welcome.item::before,
+    .welcome.item::after {
+        @apply  lg:content-['_'] lg:border lg:border-border-primary lg:absolute lg:left-0;
+    }
+
+    .welcome.item:first-of-type::before,
+    .welcome.item:last-of-type::after {
+        @apply  hidden;
+    }
+
+    .welcome.item > i {
+        @apply  flex place-items-center place-content-center w-8 h-8 text-primary
+                /** lg **/
+                lg:top-unshift-25 lg:left-[-26px] lg:absolute lg:border lg:border-border-primary lg:bg-bg-primary lg:rounded-lg lg:w-[50px] lg:h-[50px];
+    }
+
+    .welcome.item .details {
+        @apply  flex-1 ml-4;
+    }
+
+    .welcome.item .details h3 {
+        @apply  text-[1.2rem] font-medium text-secondary mb-[0.4rem];
+    }
+}
