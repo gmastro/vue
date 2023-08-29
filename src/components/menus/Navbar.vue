@@ -68,12 +68,12 @@ export default defineComponent({
                     <RouterLink :to="route.href">
                         {{ route.text }}
                     </RouterLink>
-                    <span v-if="route.hasChildren"
+                    <div v-if="route.hasChildren"
                           @click="toggleDropdown(route.name)"
                           class="dropdown">
                         <IconDropdownArrow />
-                    </span>
-                    <Submenu :toShow="toggleSubmenu(route.name)" :routes="route.children" />
+                        <Submenu :toShow="toggleSubmenu(route.name)" :routes="route.children" />
+                    </div>
                 </template>
               </li>
           </ul>
