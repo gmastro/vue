@@ -84,7 +84,7 @@
                 /** dark **/
                 lg:dark:bg-neutral-600 
                 /** lg **/
-                lg:absolute top-8 right-[-2rem] lg:z-20 lg:min-w-max lg:rounded-lg lg:border lg:border-gray-500 lg:bg-neutral-700 lg:bg-clip-padding lg:overflow-hidden
+                lg:absolute top-8 right-[-2rem] lg:z-20 lg:min-w-max lg:rounded-lg lg:border lg:border-gray-500 lg:bg-neutral-700 lg:bg-clip-padding
                 ;
     }
 

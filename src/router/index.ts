@@ -32,6 +32,10 @@ const router = createRouter({
       path: '/moufa/bar',
       name: 'bar',
       component: HomeView
+    }, {
+      path: '/moufa/bar/foo',
+      name: 'barfoo',
+      component: HomeView
     }
   ]
 })
