@@ -1,52 +1,43 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { flatten, visitor, recursiveHasAccess, type Route } from '@/functions/helpers';
-// import * as Routes from '@/data/topmenuroutes.json';
+import { visitor, recursiveHasAccess, recursiveInitSubmenu } from '@/functions/helpers';
 import Routes from '@/data/topmenuroutes.json';
-import Submenu from './Submenu.vue';
 import IconHamburger from '../icons/IconHamburger.vue';
 import IconDropdownArrow from '../icons/IconDropdownArrow.vue';
-
-const allDropdowns: {[key: string]: boolean} = {};
+import DropdownMenu from './DropdownMenu.vue';
 
 export default defineComponent({
     name: 'Navbar',
     components: {
-        Submenu,
         IconHamburger,
-        IconDropdownArrow
+        IconDropdownArrow,
+        DropdownMenu
     },
     data() {
+        const menulist = recursiveHasAccess(Routes, visitor);
+        const menu: {[key: string]: boolean} = recursiveInitSubmenu(menulist);
+
         return {
-            user: visitor,
-            routes: Routes,
-            showMenu: false,
-            dropdowns: allDropdowns,
+            showResponsive: false,
+            menulist: menulist,
+            menu: menu,
         }
     },
     methods: {
-        toggleNav: function(): void {
-            this.showMenu = !this.showMenu;
+        responsiveNav: function(): void {
+            this.showResponsive = !this.showResponsive;
         },
-        toggleDropdown: function(routeName: string): void {
-            this.dropdowns[routeName] = this.dropdowns.hasOwnProperty(routeName) ? !this.dropdowns[routeName] : true;
-        },
-        toggleSubmenu(routeName: string): boolean {
-            return this.dropdowns.hasOwnProperty(routeName) ? this.dropdowns[routeName] : false;
+        handleToggleDropdown: function(routeName: string): void {
+            this.menu[routeName] = this.menu.hasOwnProperty(routeName) ? !this.menu[routeName] : true;
         },
     },
-    computed: {
-        menulist(): Route[] {
-            return recursiveHasAccess(this.routes, this.user);
-        }
-    }
 });
 </script>
 
 <template>
   <nav class="navbar sticky-top">
     <div class="nav-wrap">
-        <button @click="toggleNav()"
+        <button @click="responsiveNav()"
                 class="hamburger"
                 type="button"
                 aria-expanded="false"
@@ -56,7 +47,7 @@ export default defineComponent({
           </span>
         </button>
 
-        <div :class="[showMenu ? 'flex-row' : '!visible hidden']" class="nav-responsive">
+        <div :class="[showResponsive ? 'flex-row' : '!visible hidden']" class="nav-responsive">
           <ul class="nav-left">
               <li v-for="(route, index) in menulist" :key="route.name">
                 <template v-if="route.isBrand">
@@ -68,12 +59,7 @@ export default defineComponent({
                     <RouterLink :to="route.href">
                         {{ route.text }}
                     </RouterLink>
-                    <span v-if="route.hasChildren"
-                          @click="toggleDropdown(route.name)"
-                          class="dropdown">
-                        <IconDropdownArrow />
-                    </span>
-                    <Submenu :toShow="toggleSubmenu(route.name)" :routes="route.children" />
+                    <DropdownMenu v-if="route.hasChildren" :parent="route" :menu="menu" @toggle-dropdown="handleToggleDropdown" />
                 </template>
               </li>
           </ul>

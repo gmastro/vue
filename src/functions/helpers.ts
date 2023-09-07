@@ -115,6 +115,38 @@ export function hasAccess(route: Route, user: User): boolean {
 }
 
 /**
+ * Submenu Toggle
+ *
+ * Unlike the dropdown event, this one generates initial state per component.
+ * > **Note**:  This function will cause side effects on the provided menu structure
+ *
+ * @param   routeName Unique identifier name per route.
+ * @param   menu Menu object holding active/inactive dropdown components
+ */
+export const toggleSubmenu = (routeName: string, menu: {[key: string]: boolean}): boolean => 
+    menu.hasOwnProperty(routeName) ? menu[routeName] : false;
+
+/**
+ * Sets ini
+ *
+ * @param param0 Destructured routes
+ * @param menu Storage for all those menus to display
+ */
+export const recursiveInitSubmenu = ([r, ...rx]: Route[], menu: {[key: string]: boolean} = {}): {[key: string]: boolean} => {
+    if (r.hasOwnProperty('children') === false || typeof r.children === 'undefined') {
+        return recursiveInitSubmenu(rx, menu);
+    }
+
+    if (r.children.length === 0) {
+        menu = recursiveInitSubmenu(rx, menu);
+    } else {
+        menu[r.name] = toggleSubmenu(r.name, menu);
+    }
+
+    return rx.length === 0 ? menu : recursiveInitSubmenu(rx, menu);
+}
+
+/**
  * Recursive Access
  *
  * It will return all those routes which, the given user has access.
@@ -126,10 +158,6 @@ export function hasAccess(route: Route, user: User): boolean {
  */
 export function recursiveHasAccess(routes: Route[] = [], user: User): Route[] {
     let list = routes.map( (r: Route) => {
-        if (r.hasOwnProperty('isBrand') && r.isBrand === true) {
-            r.text = `<img alt="Vue logo" class="block mr-4 lg:m-0" src="logo.svg" width="24"/>`;
-        }
-
         r.children = recursiveHasAccess(r.children, user)
         r.isBrand = r.hasOwnProperty('isBrand') && r.isBrand === true;
         r.hasChildren = r.children.length > 0;
@@ -139,3 +167,16 @@ export function recursiveHasAccess(routes: Route[] = [], user: User): Route[] {
 
     return list.filter( (r: Route) => hasAccess(r, user));
 }
+
+/**
+ * Dropdown toggle
+ *
+ * > **Note**:  This function will cause side effects on the provided menu structure
+ *
+ * @param   routeName Unique identifier name per route
+ * @param   menu Menu object holding active/inactive dropdown components
+ */
+export const toggleDropdown = (routeName: string, menu: {[key: string]: boolean}): void => {
+    menu[routeName] = menu.hasOwnProperty(routeName) ? !menu[routeName] : true;
+};
+

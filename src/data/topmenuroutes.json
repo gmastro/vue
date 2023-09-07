@@ -27,7 +27,16 @@
             "text": "Bar",
             "name": "bar",
             "groups": ["*"],
-            "roles":  ["*"]
+            "roles":  ["*"],
+            "children": [
+                {
+                    "href": "moufa/bar/foo",
+                    "text": "Foobar",
+                    "name": "barfoo",
+                    "groups": ["*"],
+                    "roles":  ["*"]
+                }
+            ]
         }
     ],
     "groups": ["*"],

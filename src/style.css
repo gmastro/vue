@@ -21,7 +21,7 @@
                 /** dark **/
                 dark:bg-neutral-600
                 /** lg **/
-                lg:py-4;
+                lg:py-2;
     }
 
     .navbar .nav-wrap {
@@ -29,9 +29,9 @@
     }
 
     .navbar .nav-wrap .nav-responsive {
-        @apply  mt-2 flex-grow basis-[100%] items-center
+        @apply  mt-2 pt-2 flex-grow basis-[100%] items-center border-t border-gray-500 
                 /** lg **/
-                lg:mt-0 lg:!flex lg:basis-auto;
+                lg:mt-0 lg:pt-0 lg:!flex lg:basis-auto lg:border-none;
     }
 
     .navbar .hamburger {
@@ -53,22 +53,44 @@
     }
 
     .navbar ul.nav-left li {
-        place-content: flex-start;
-        @apply  mb-4 px-4 flex place-items-center relative
-                /** lg **/
-                lg:mb-0 lg:pl-0 lg:pr-1 lg:place-content-center;
+        @apply  px-2 lg:py-2;
     }
 
-    .navbar ul li a {
-        @apply  text-lime-500
+    .navbar ul.nav-left > li {
+        place-content: flex-start;
+        @apply  mb-4 flex
+                /** lg **/
+                lg:mb-0 lg:place-content-center;
+    }
+
+    .navbar ul.nav-left li a {
+        @apply  whitespace-nowrap lg:px-2 text-sm font-normal text-lime-500
                 /** hover **/
                 hover:text-lime-700
                 /** focus **/
-                focus:text-lime-700;
+                focus:text-lime-700
+                /** disabled **/
+                disabled:pointer-events-none disabled:bg-transparent disabled:text-lime-400
+                /** active **/
+                active:text-lime-800 active:no-underline;
     }
 
-    .navbar ul li span.dropdown {
-        @apply  ml-2 w-2;
+    .navbar ul.nav-left li div.dropdown {
+        @apply  ml-2 w-2 inline-block relative;
+    }
+
+    .navbar ul.nav-left ul {
+        @apply  m-0 list-none text-left text-base shadow-lg static
+                /** dark **/
+                lg:dark:bg-neutral-600 
+                /** lg **/
+                lg:absolute top-8 right-[-2rem] lg:z-20 lg:min-w-max lg:rounded-lg lg:border lg:border-gray-500 lg:bg-neutral-700 lg:bg-clip-padding
+                ;
+    }
+
+    .navbar ul.nav-left ul li a {
+        @apply  lg:px-4 py-2
+        ;
     }
 
     /* welcome item */
