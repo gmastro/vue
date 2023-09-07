@@ -1,7 +1,6 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { visitor, recursiveHasAccess, recursiveInitSubmenu } from '@/functions/helpers';
-// import * as Routes from '@/data/topmenuroutes.json';
 import Routes from '@/data/topmenuroutes.json';
 import IconHamburger from '../icons/IconHamburger.vue';
 import IconDropdownArrow from '../icons/IconDropdownArrow.vue';
