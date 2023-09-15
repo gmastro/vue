@@ -1,5 +1,19 @@
 import type { Component } from "vue";
 
+export type JSONValue = 
+ | string
+ | number
+ | boolean
+ | null
+ | JSONValue[]
+ | {[key: string]: JSONValue}
+
+export interface JSONObject {
+  [k: string]: JSONValue
+}
+
+export interface JSONArray extends Array<JSONValue> {}
+
 export interface User {
     id?: number;
     first_name?: string;
@@ -33,7 +47,7 @@ export interface Route {
 export function flatten <T>(storage: T[], [v, ...vs]: any): T[] {
     if(Array.isArray(v)) {
         storage = flatten(storage, v);
-    } else {
+    } else if(v !== undefined) {
         storage.push(v);
     }
 
@@ -52,20 +66,16 @@ export const visitor: User = {
  *
  * @param user 
  */
-export function isGuest(user: User): boolean {
-    return user === visitor;
-};
+export const isGuest = (user: User): boolean => user === visitor;
 
 /**
  * Concatenates user first and last names
  *
  * @param user 
  */
-export function fullname(user: User): string {
-    return `${user.first_name} ${user.last_name}`;
-    // or
-    // return [user.first_name, user.last_name].join(' ');
-}
+export const fullname = (user: User): string  => `${user.first_name} ${user.last_name}`;
+// or
+// return [user.first_name, user.last_name].join(' ');
 
 /**
  * Check if an array contains the given value
@@ -73,9 +83,7 @@ export function fullname(user: User): string {
  * @param key 
  * @param a 
  */
-export function has<T>(key: T, a: T[]): boolean {
-    return a.indexOf(key) > -1;
-}
+export const has = <T>(key: T, a: T[]): boolean => a.indexOf(key) > -1;
 
 /**
  * An intersection or union of keys found an array of the same data type
@@ -85,7 +93,7 @@ export function has<T>(key: T, a: T[]): boolean {
  * @param intersect 
  * @param invert 
  */
-export function multiHas<T>(keys: T[], a: T[], intersect: boolean = true, invert: boolean = false): boolean {
+export const multiHas = <T>(keys: T[], a: T[], intersect: boolean = true, invert: boolean = false): boolean => {
     let intersection: boolean = true;
     let union: boolean = false;
     let found: boolean = true;
@@ -109,10 +117,9 @@ export function multiHas<T>(keys: T[], a: T[], intersect: boolean = true, invert
  * @param   route Route to examine
  * @param   user User with certain roles and within certain groups
  */
-export function hasAccess(route: Route, user: User): boolean {
-    return multiHas<string>(user.groups, route.groups, false)
-        && multiHas<string>(user.roles, route.roles, false);
-}
+export const hasAccess = (route: Route, user: User): boolean => 
+    multiHas<string>(user.groups, route.groups, false)
+    && multiHas<string>(user.roles, route.roles, false);
 
 /**
  * Submenu Toggle
@@ -156,7 +163,7 @@ export const recursiveInitSubmenu = ([r, ...rx]: Route[], menu: {[key: string]: 
  * @param   user User with certain roles and within certain groups
  * @returns Route[]
  */
-export function recursiveHasAccess(routes: Route[] = [], user: User): Route[] {
+export const recursiveHasAccess = (routes: Route[] = [], user: User): Route[] => {
     let list = routes.map( (r: Route) => {
         r.children = recursiveHasAccess(r.children, user)
         r.isBrand = r.hasOwnProperty('isBrand') && r.isBrand === true;
@@ -180,3 +187,18 @@ export const toggleDropdown = (routeName: string, menu: {[key: string]: boolean}
     menu[routeName] = menu.hasOwnProperty(routeName) ? !menu[routeName] : true;
 };
 
+/**
+ * Capitalize Word
+ *
+ * @param   string word
+ * @return  string
+ */
+export const capitalize = (word: string): string => {
+    const l: number = word.length;
+
+    switch(l) {
+        case 0:  return word;
+        case 1:  return word[0].toLocaleUpperCase();
+        default: return word[0].toLocaleUpperCase() + word.substring(1).toLocaleLowerCase();
+    }
+}
