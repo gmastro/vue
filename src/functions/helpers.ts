@@ -1,18 +1,5 @@
 import type { Component } from "vue";
-
-export type JSONValue = 
- | string
- | number
- | boolean
- | null
- | JSONValue[]
- | {[key: string]: JSONValue}
-
-export interface JSONObject {
-  [k: string]: JSONValue
-}
-
-export interface JSONArray extends Array<JSONValue> {}
+import { useRoute, type LocationQuery } from "vue-router";
 
 export interface User {
     id?: number;
@@ -122,6 +109,19 @@ export const hasAccess = (route: Route, user: User): boolean =>
     && multiHas<string>(user.roles, route.roles, false);
 
 /**
+ * Return Property
+ *
+ * From an obhect it will check whether the given property exists. If not it will return a default value through
+ * emptyType argument.
+ *
+ * @param   property Key of the property.
+ * @param   o Object containing required value
+ * @param   emptyType Default value to return
+ */
+export const hasOrEmpty = <T>(property: string | symbol | number, o: {[_:string | symbol | number]: T}, emptyType: T): T => 
+    o.hasOwnProperty(property) ? o[property] : emptyType;
+
+/**
  * Submenu Toggle
  *
  * Unlike the dropdown event, this one generates initial state per component.
@@ -201,4 +201,29 @@ export const capitalize = (word: string): string => {
         case 1:  return word[0].toLocaleUpperCase();
         default: return word[0].toLocaleUpperCase() + word.substring(1).toLocaleLowerCase();
     }
-}
+};
+
+/**
+ * Uri Generator
+ *
+ * Generates a url with given query parameters.
+ * It will either add or replace query parameters into the given path and will if requested nicefy the url
+ *
+ * @param   path Original path to concatenate query parameters
+ * @param   params Added or replaced parameters
+ * @param   nicefy Either default uri format or nicefied with backslashes
+ * @return  string
+ */
+export const uriGenerator = (path: string, params: object | LocationQuery = {}, nicefy: boolean = false): string => {
+    if (Object.keys(params).length === 0) {
+        return path;
+    }
+
+    const query = {...useRoute().query, ...params};
+
+    if (nicefy === true) {
+        return [path, ...Object.keys(query).map((k:string) => `${k}/${query[k]}`)].join('/');
+    }
+
+    return [path, Object.keys(query).map((k:string) => `${k}=${query[k]}`).join('&')].join('?');
+};
