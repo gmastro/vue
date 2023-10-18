@@ -36,6 +36,13 @@ export type PagerNodes = {
     active: boolean,
 };
 
+export type PagerRanges = {
+    items: bigint,
+    from: bigint,
+    to: bigint,
+    total: bigint,
+};
+
 export const boundaries: BoundariesOptions = {
     firstLast   : true,
     previousNext: true,
@@ -281,13 +288,6 @@ export class Paginate
     ) {
         this.dataLength = data.length;
         this.options = {...this.options, ...options};
-
-        this.itemsPerPage = this.queryParamToBigInt(this.options.uriQueryItemsName);
-
-        this.pages = BigInt(Math.ceil(this.dataLength/Number(this.itemsPerPage)));
-        this.pageLast = this.pages;
-        this.pageCurrent = this.queryParamToBigInt(this.options.uriQueryPageName);
-        this.dataToItems();
     }
 
     /**
@@ -321,6 +321,15 @@ export class Paginate
         for(i = 0, j; i < this.dataLength; this.items.push(this.data.slice(i, j)), i += ipp, j += ipp);
     };
 
+    public calculate = (): void => {
+        this.itemsPerPage = this.queryParamToBigInt(this.options.uriQueryItemsName);
+
+        this.pages = BigInt(Math.ceil(this.dataLength/Number(this.itemsPerPage)));
+        this.pageLast = this.pages;
+        this.pageCurrent = this.queryParamToBigInt(this.options.uriQueryPageName);
+        this.dataToItems();
+    }
+
     /**
      * Content Getter
      *
@@ -333,7 +342,7 @@ export class Paginate
      *
      * Numeric range of chunked items
      */
-    public getRange = (): {items: bigint, from: bigint, to: bigint, total: bigint} => {
+    public getRange = (): PagerRanges => {
         const total = BigInt(this.dataLength);
 
         if (total === 0n) {
