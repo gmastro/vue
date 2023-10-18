@@ -12,6 +12,12 @@
     "groups": ["*"],
     "roles":  ["*"]
 }, {
+        "href": "/users",
+        "text": "Users",
+        "name": "users",
+        "groups": ["*"],
+        "roles":  ["*"]
+}, {
     "href": "/moufa",
     "text": "Moufa",
     "name": "moufa",
