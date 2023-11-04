@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { visitor, recursiveHasAccess, recursiveInitSubmenu } from '@/functions/helpers';
+import { visitor, recursiveHasAccess, recursiveInitSubmenu, type Route } from '@/functions/helpers';
 import Routes from '@/data/topmenuroutes.json';
 import IconHamburger from '../icons/IconHamburger.vue';
 import IconDropdownArrow from '../icons/IconDropdownArrow.vue';
@@ -14,7 +14,7 @@ export default defineComponent({
         DropdownMenu
     },
     data() {
-        const menulist = recursiveHasAccess(Routes, visitor);
+        const menulist: Route[] = recursiveHasAccess(Routes, visitor);
         const menu: {[key: string]: boolean} = recursiveInitSubmenu(menulist);
 
         return {

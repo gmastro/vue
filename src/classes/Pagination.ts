@@ -1,5 +1,5 @@
 import type { LocationQuery } from 'vue-router';
-import type { Options, PaginateRanges, PaginationOptions } from "@/interfaces/options";
+import type { Options, PaginationOptions } from "@/interfaces/options";
 import { Paginate } from "@/classes/Paginate";
 import { Pager } from "@/classes/Pager";
 

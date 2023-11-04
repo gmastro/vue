@@ -94,12 +94,17 @@
     }
 
     table.table {
-        @apply  table-auto
+        @apply  table-auto border-collapse
         ;
     }
 
-    table.table .table-caption {
+    table.table caption {
         @apply  caption-top
+        ;
+    }
+
+    table.table tr {
+        @apply  border border-gray-500
         ;
     }
 

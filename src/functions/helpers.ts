@@ -24,6 +24,13 @@ export interface Route {
     children?: Route[];
 };
 
+export const guestRoles: string[] = ['?', '*'];
+export const guestGroups: string[] = guestRoles;
+export const visitor: User = {
+    groups: guestGroups,
+    roles: guestRoles,
+};
+
 /**
  * Nested list flatten.
  *
@@ -31,7 +38,7 @@ export interface Route {
  * @param storage 
  * @param param1 
  */
-export function flatten <T>(storage: T[], [v, ...vs]: any): T[] {
+export const flatten = <T>(storage: T[], [v, ...vs]: any): T[] => {
     if(Array.isArray(v)) {
         storage = flatten(storage, v);
     } else if(v !== undefined) {
@@ -41,11 +48,38 @@ export function flatten <T>(storage: T[], [v, ...vs]: any): T[] {
     return vs.length === 0 ? storage : flatten(storage, vs);
 };
 
-export const guestRoles: string[] = ['?', '*'];
-export const guestGroups: string[] = guestRoles;
-export const visitor: User = {
-    groups: guestGroups,
-    roles: guestRoles,
+/**
+ * Power Set
+ *
+ * Provides list of combinations in a n2logn complexity rather than n3.
+ *
+ * @param   data Array of anything to use and add
+ * @param   minLength Length of the accepted combinations, or could be a dependency providing different set of accepted
+ *          comparisons
+ */
+export const powerSet = <T>(data: T[], minLength: number = 1) : T[][] => {
+    const l: number = data.length;
+    const p: number = Math.pow(2, l);
+    let i: number,
+        j: number,
+        b: string,
+        c: T[],
+        o: T[][] = [];
+    for(i = 0; i < p; i++) {
+        b = (i >>> 0).toString(2).padStart(l, "0");
+        c = [];
+        for(j = 0; j < l; j++) {
+            if(b[j] === "1") {
+                c.push(data[j]);
+            }
+        }
+
+        if (c.length >= minLength) {
+            o.push(c);
+        }
+    }
+
+    return o;
 };
 
 /**
@@ -61,8 +95,6 @@ export const isGuest = (user: User): boolean => user === visitor;
  * @param user 
  */
 export const fullname = (user: User): string  => `${user.first_name} ${user.last_name}`;
-// or
-// return [user.first_name, user.last_name].join(' ');
 
 /**
  * Check if an array contains the given value
@@ -90,7 +122,7 @@ export const multiHas = <T>(keys: T[], a: T[], intersect: boolean = true, invert
         union = union || found;
     }
 
-    let flag: boolean = intersect ? intersection : union;
+    const flag: boolean = intersect ? intersection : union;
     return invert ? !flag : flag;
 }
 
@@ -198,7 +230,7 @@ export const capitalize = (word: string): string => {
 
     switch(l) {
         case 0:  return word;
-        case 1:  return word[0].toLocaleUpperCase();
+        case 1:  return word.toLocaleUpperCase();
         default: return word[0].toLocaleUpperCase() + word.substring(1).toLocaleLowerCase();
     }
 };
@@ -211,10 +243,11 @@ export const capitalize = (word: string): string => {
  *
  * @param   path Original path to concatenate query parameters
  * @param   params Added or replaced parameters
- * @param   nicefy Either default uri format or nicefied with backslashes
+ * @param   nicefy Either default uri format or nicefied with given delimiter
+ * @param   delimiter Defaults to backslash
  * @return  string
  */
-export const uriGenerator = (path: string, params: object | LocationQuery = {}, nicefy: boolean = false): string => {
+export const uriGenerator = (path: string, params: object | LocationQuery = {}, nicefy: boolean = false, delimiter: string = '/'): string => {
     if (Object.keys(params).length === 0) {
         return path;
     }
@@ -222,7 +255,7 @@ export const uriGenerator = (path: string, params: object | LocationQuery = {}, 
     const query = {...useRoute().query, ...params};
 
     if (nicefy === true) {
-        return [path, ...Object.keys(query).map((k:string) => `${k}/${query[k]}`)].join('/');
+        return [path, ...Object.keys(query).map((k:string) => `${k}${delimiter}${query[k]}`)].join(delimiter);
     }
 
     return [path, Object.keys(query).map((k:string) => `${k}=${query[k]}`).join('&')].join('?');

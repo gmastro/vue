@@ -4,7 +4,7 @@ export type JSONValue =
  | boolean
  | null
  | JSONValue[]
- | {[key: string]: JSONValue}
+ | {[key: string | number | symbol]: JSONValue}
 
 export interface JSONObject {
   [k: string | number | symbol]: JSONValue
