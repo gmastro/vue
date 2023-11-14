@@ -4,10 +4,10 @@ export type JSONValue =
  | boolean
  | null
  | JSONValue[]
- | {[key: string | number | symbol]: JSONValue}
+ | {[_: string | number | symbol]: JSONValue}
 
 export interface JSONObject {
-  [k: string | number | symbol]: JSONValue
+    [_: string | number | symbol]: JSONValue
 }
 
-export interface JSONArray extends Array<JSONValue> {}
+export interface JSONArray extends Array<JSONValue | JSONObject> {}

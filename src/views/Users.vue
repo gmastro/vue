@@ -32,24 +32,58 @@ export default defineComponent({
     setup(props, context) {
         const languages: JSONObject = locales[props.language];
         const locale: JSONValue = languages[props.locale];
-
         const options: JSONObject = {
-            tableClass: 'table',
+            locale: locale,
+            caption: 'Loaded from file user data',
+            header: ['avatar', 'id', 'first_name', 'last_name', 'email'/*, 'created_at', 'updated_at'*/],
+            render: {avatar: {img: {width:200, height: 200}}},
+            delimiter: '-',
+            styles: {
+                className: 'table',
+                caption: null,
+                thead: {
+                    className: 'thead',
+                    tr: {
+                        className: 'thead-tr',
+                        th: {
+                            2: {
+                                className: 'thead-tr-th'
+                            },
+                        },
+                    }
+                },
+                tbody: {
+                    className: 'tbody',
+                    tr: {
+                        className: 'tbody-tr',
+                        td: {
+                            className: 'tbody-tr-td',
+                            3: {
+                                className: 'tbody-tr-td-3',
+                                },
+                            },
+                        0 : {
+                            className: 'tbody-tr-0',
+                            td: {
+                                className: 'tbody-tr-0-td',
+                                0: {
+                                    className: 'tbody-tr-0-td-0'
+                                },
+                            },
+                        }
+                    },
+                },
+                tfoot: {
+                    className: 'tfoot',
+                },
+            },
             showCaption: true,
             showHeader: true,
             showFooter: false,
-            render: {avatar: 'image'}
-        };
-
-        const content: JSONObject = {
-            caption: 'Loaded from file user data',
-            header: ['avatar', 'id', 'first_name', 'last_name', 'email'/*, 'created_at', 'updated_at'*/],
-            locale: locale,
         };
 
         return {
             options: options,
-            content: content,
             paginationData: flatten<User>([], UsersData.data),
         };
     },
@@ -65,7 +99,7 @@ export default defineComponent({
             pagination.run(useRoute().query);
 
             return {
-                ...this.content,
+                ...this.options,
                 data    : pagination.paginate().getContent(),
                 ranges  : pagination.paginate().ranges(),
                 pager   : pagination.pager().getContent(),

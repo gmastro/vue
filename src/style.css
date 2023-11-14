@@ -94,7 +94,7 @@
     }
 
     table.table {
-        @apply  table-auto border-collapse
+        @apply  table-auto border-collapse w-full rounded-md shadow-md shadow-gray-600
         ;
     }
 
@@ -104,12 +104,27 @@
     }
 
     table.table tr {
-        @apply  border border-gray-500
+        @apply  border-t border-gray-500
+        ;
+    }
+
+    table.table thead tr {
+        @apply  border-t-0
+        ;
+    }
+
+    table.table tr th {
+        @apply  font-bold p-2
+        ;
+    }
+
+    table.table tr td {
+        @apply  font-normal p-2
         ;
     }
 
     div.pager {
-        @apply  flex flex-col flex-wrap shadow-md shadow-gray-800 pt-2 pb-4 my-4 rounded-md;
+        @apply  flex flex-col flex-wrap shadow-md shadow-gray-600 pt-2 pb-4 my-4 rounded-md;
     }
 
     div.pager .summary {

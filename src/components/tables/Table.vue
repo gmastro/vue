@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent } from 'vue';
 import { hasOrEmpty, powerSet } from '@/functions/helpers';
 import type { JSONObject, JSONValue } from '@/interfaces/json';
 
@@ -17,9 +17,7 @@ export default defineComponent({
     },
     setup(props, context) {
         const delimiter: string = props.options?.delimiter ?? '-';
-        const tableClass: string = context.attrs.class === "string" ? context.attrs.class : "table";
-
-        let container: {[_:string | symbol | number]: JSONValue} = {};
+        let css: JSONObject = {};
 
         const styles = (c:JSONObject | object, path: string[]) => {
             Object.entries(c).map(([k, v]) => {
@@ -38,8 +36,9 @@ export default defineComponent({
 
                 switch(k) {
                     case 'className':
-                        container[pathToString] = v;
+                        css[pathToString] = v;
                         break;
+                    case 'table':
                     case 'thead':
                     case 'tbody':
                     case 'tfoot':
@@ -54,14 +53,13 @@ export default defineComponent({
                 }
             });
 
-            return container;
+            return css;
         };
 
-        styles(props.options?.styles ?? {}, [tableClass]);
+        styles({table: props.options?.styles ?? {}}, []);
 
         return {
-            tableClass: tableClass,
-            css: container,
+            css: css,
             delimiter: delimiter,
         };
     },
@@ -101,7 +99,7 @@ export default defineComponent({
         },
     },
     methods: {
-        renderContent: (columnName: string, render: {[_:string]: string}): string | null => {
+        renderContent: (columnName: string, render: JSONObject): JSONValue => {
             return render?.[columnName];
         },
         setClass: (styles: JSONObject, el:string, tags: (number|string)[], combos: (number|string)[] = [], delimiter: string = '-'): JSONValue => {
@@ -135,25 +133,25 @@ export default defineComponent({
 </script>
 
 <template>
-    <table :class="tableClass">
-        <caption v-if="showCaption" :class="setClass(css, 'caption', [tableClass, 'caption'])" v-html="renderCaption"></caption>
-        <thead v-if="showHeader" :class="setClass(css, 'thead', [tableClass, 'thead'])">
-            <tr :class="setClass(css, 'tr', [tableClass, 'thead', 'tr'])">
-                <th v-for="(col, ci) in content.header" :key="ci" :class="setClass(css, 'th', [tableClass, 'thead', 'tr', 'th'], [ci])">
+    <table :class="setClass(css, 'table', ['table'])">
+        <caption v-if="showCaption" :class="setClass(css, 'caption', ['table', 'caption'])" v-html="renderCaption"></caption>
+        <thead v-if="showHeader" :class="setClass(css, 'thead', ['table', 'thead'])">
+            <tr :class="setClass(css, 'tr', ['table', 'thead', 'tr'])">
+                <th v-for="(col, ci) in content.header" :key="ci" :class="setClass(css, 'th', ['table', 'thead', 'tr', 'th'], [ci])">
                     {{ content.locale[col] }}
                 </th>
             </tr>
         </thead>
-        <tfoot v-if="showFooter" :class="setClass(css, 'tfoot', [tableClass, 'tfoot'])">
-            <tr :class="setClass(css, 'tr', [tableClass, 'tfoot', 'tr'])">
+        <tfoot v-if="showFooter" :class="setClass(css, 'tfoot', ['table', 'tfoot'])">
+            <tr :class="setClass(css, 'tr', ['table', 'tfoot', 'tr'])">
                 <!-- needs cols or at least a way to have equal number of td's with the rest of the table -->
-                <td :class="setClass(css, 'td', [tableClass, 'tfoot', 'tr', 'td'])"></td>
+                <td :class="setClass(css, 'td', ['table', 'tfoot', 'tr', 'td'])"></td>
             </tr>
         </tfoot>
         <tbody>
-            <tr v-for="(row, ri, rk) in renderData" :key="[ri, rk].join('-')" :class="setClass(css, 'tr', [tableClass, 'tbody', 'tr'], [ri])">
-                <td v-for="(col, ci) in content.header" :key="[ri, rk, col, ci].join('-')" :class="setClass(css, 'td', [tableClass, 'tbody', 'tr'], [ri, 'td', ci])">
-                    <template v-if="renderContent(col, options.render) === 'image'">
+            <tr v-for="(row, ri, rk) in renderData" :key="[ri, rk].join('-')" :class="setClass(css, 'tr', ['table', 'tbody', 'tr'], [ri])">
+                <td v-for="(col, ci) in content.header" :key="[ri, rk, col, ci].join('-')" :class="setClass(css, 'td', ['table', 'tbody', 'tr'], [ri, 'td', ci])">
+                    <template v-if="typeof renderContent(col, options.render) === 'object'">
                         <img :src="row[col]" :alt="row[col]" />
                     </template>
                     <template v-else>
